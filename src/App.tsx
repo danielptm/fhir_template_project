@@ -1,26 +1,31 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import {Client} from './util/Client';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component<any, any>{
+
+    componentDidMount() {
+      var client = new Client();
+      client.get()
+      .then(patient => {
+          console.log(patient);
+          this.setState({patient: patient})
+      })
+       setInterval(() => {
+           console.log(this.state);
+       }, 5000)
+    }
+
+
+
+    render(){
+        if (this.state && this.state.patient) {
+            return <div>Hi {this.state.patient.name[0].given[0]}</div>;
+        }
+        else {
+            return <div>Loading...</div>
+        }
+    }
 }
 
 export default App;
